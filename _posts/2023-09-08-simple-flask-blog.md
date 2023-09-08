@@ -57,7 +57,7 @@ if __name__ == '__main__':
 
 ### 2. `index.html`
 
-```html
+```
 {% raw %}
 <!DOCTYPE html>
 <html>
@@ -79,7 +79,7 @@ if __name__ == '__main__':
 
 ### 3. `post.html`
 
-```html
+```
 {% raw %}
 <!DOCTYPE html>
 <html>
@@ -98,7 +98,7 @@ if __name__ == '__main__':
 
 ### 4. `add.html`
 
-```html
+```
 {% raw %}
 <!DOCTYPE html>
 <html>
