@@ -47,7 +47,7 @@ def add():
     if request.method == 'POST':
         title = request.form['title']
         content = request.form['content']
-        posts.append({'title': title, 'content': content})
+        posts.append/(/{'title': title, 'content': content})
         return redirect('/')
     return render_template('add.html')
 
@@ -68,7 +68,7 @@ if __name__ == '__main__':
     <a href="/add">Add a new post</a>
     <ul>
         {% for idx, post in enumerate(posts) %}
-            <li><a href="{{ url_for('post', post_id=idx) }}">{{ post.title }}</a></li>
+            <li><a href="/{{ url_for('post', post_id=idx) }}/">{{ post.title }}</a></li>
         {% endfor %}
     </ul>
 </body>
@@ -81,11 +81,11 @@ if __name__ == '__main__':
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{{ post.title }}</title>
+    <title>/{{ post.title }}/</title>
 </head>
 <body>
-    <h1>{{ post.title }}</h1>
-    <p>{{ post.content }}</p>
+    <h1>/{{ post.title }}/</h1>
+    <p>/{{ post.content }}/</p>
     <a href="/">Back to home</a>
 </body>
 </html>
