@@ -58,6 +58,7 @@ if __name__ == '__main__':
 ### 2. `index.html`
 
 ```html
+{% raw %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -68,32 +69,37 @@ if __name__ == '__main__':
     <a href="/add">Add a new post</a>
     <ul>
         {% for idx, post in enumerate(posts) %}
-            <li><a href="// url_for('post', post_id=idx) //">// post.title //</a></li>
+            <li><a href="{{ url_for('post', post_id=idx) }}">{{ post.title }}</a></li>
         {% endfor %}
     </ul>
 </body>
 </html>
+{% endraw %}
 ```
 
 ### 3. `post.html`
 
 ```html
+{% raw %}
 <!DOCTYPE html>
 <html>
 <head>
-    <title> post.title </title>
+    <title>{{ post.title }}</title>
 </head>
 <body>
-    <h1>// post.title //</h1>
-    <p>// post.content //</p>
+    <h1>{{ post.title }}</h1>
+    <p>{{ post.content }}</p>
     <a href="/">Back to home</a>
 </body>
 </html>
+{% endraw %}
+
 ```
 
 ### 4. `add.html`
 
 ```html
+{% raw %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -113,6 +119,8 @@ if __name__ == '__main__':
     <a href="/">Back to home</a>
 </body>
 </html>
+{% endraw %}
+
 ```
 
 ### Run the App
