@@ -55,73 +55,7 @@ if __name__ == '__main__':
     app.run(debug=True)
 ```
 
-### 2. `index.html`
 
-```
-{% raw %}
-<!DOCTYPE html>
-<html>
-<head>
-    <title>My Blog</title>
-</head>
-<body>
-    <h1>Welcome to My Blog!</h1>
-    <a href="/add">Add a new post</a>
-    <ul>
-        {% for idx, post in enumerate(posts) %}
-            <li><a href="{{ url_for('post', post_id=idx) }}">{{ post.title }}</a></li>
-        {% endfor %}
-    </ul>
-</body>
-</html>
-{% endraw %}
-```
-
-### 3. `post.html`
-
-```
-{% raw %}
-<!DOCTYPE html>
-<html>
-<head>
-    <title>{{ post.title }}</title>
-</head>
-<body>
-    <h1>{{ post.title }}</h1>
-    <p>{{ post.content }}</p>
-    <a href="/">Back to home</a>
-</body>
-</html>
-{% endraw %}
-
-```
-
-### 4. `add.html`
-
-```
-{% raw %}
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Add Post</title>
-</head>
-<body>
-    <h1>Add a New Post</h1>
-    <form method="post">
-        <label for="title">Title:</label>
-        <input type="text" name="title" required>
-        <br>
-        <label for="content">Content:</label>
-        <textarea name="content" required></textarea>
-        <br>
-        <input type="submit" value="Submit">
-    </form>
-    <a href="/">Back to home</a>
-</body>
-</html>
-{% endraw %}
-
-```
 
 ### Run the App
 
