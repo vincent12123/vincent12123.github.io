@@ -14,12 +14,12 @@ timezone: Asia/Pontianak
 # jekyll-seo-tag settings › https://github.com/jekyll/jekyll-seo-tag/blob/master/docs/usage.md
 # ↓ --------------------------
 
-title: SKD Note # the main title
+title: SKD Insight # the main title
 
-tagline: My Notes # it will display as the sub-title
+tagline: Panduan Pemrograman # it will display as the sub-title
 
 description: >- # used by seo meta and the atom feed
-  A minimal, responsive and feature-rich Jekyll theme for technical writing.
+  Catatan mendalam, interaktif, dan kaya informasi mengenai teknologi dan pemrograman terkini.
 
 # Fill in the protocol & hostname for your site.
 # e.g. 'https://username.github.io', note that it does not end with a '/'.
