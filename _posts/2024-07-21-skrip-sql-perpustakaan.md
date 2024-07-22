@@ -1,6 +1,6 @@
 ---
 title: "Skrip SQL untuk Tabel Perpustakaan"
-date: 2023-07-21 10:00:00 +0800
+date: 2024-07-21 10:00:00 +0800
 categories: [SQL, Database]
 tags: [SQL, database, tutorial]
 ---
@@ -128,3 +128,4 @@ INSERT INTO peminjaman (id_user, id_buku, tanggal_pinjam, tanggal_kembali) VALUE
 (3, 23, '2023-08-03', '2023-08-22'),
 (4, 24, '2023-08-04', NULL),
 (5, 25, '2023-08-05', '2023-08-24');
+```
