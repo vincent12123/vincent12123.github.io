@@ -1,9 +1,9 @@
-
 ---
 title: "Elemen Capaian Pembelajaran Informatika SMA Fase E"
 date: 2024-07-23
 categories: [Informatika, SMA, Capaian Pembelajaran]
 tags: [Berpikir Komputasional, Literasi Digital, Pendidikan]
+pin: true
 ---
 
 ### Elemen Capaian Pembelajaran Informatika SMA Fase E
