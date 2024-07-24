@@ -1,8 +1,8 @@
 ---
-title: "crowdstrike 1"
+title: "Validasi Data Crowdstrike"
 date: 2024-07-20 10:00:00 +0700
-categories: [kategori1, subkategori]
-tags: [tag1, tag2]
+categories: [Infomatika, Validasi_data]
+tags: [Informatika]
 pin: true
 ---
 Berikut adalah langkah-langkah untuk mengevaluasi validitas sumber data dalam konteks insiden CrowdStrike yang terjadi pada Juli 2024:
