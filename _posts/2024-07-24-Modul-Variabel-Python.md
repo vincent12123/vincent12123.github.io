@@ -3,6 +3,8 @@ title: "Modul Variabel Python"
 date: 2024-07-24
 categories: [Variabel, Python]
 tags: [variabel, Python]
+pin: true
+toc: true
 ---
 
 ### Modul Penggunaan Variabel dan Input dalam Program Pemasukan dan Pengeluaran dengan Python
