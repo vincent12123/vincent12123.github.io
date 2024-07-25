@@ -3,6 +3,8 @@ title: "Query SQL pada Tabel Pegawai"
 date: 2024-07-24
 categories: [SQL, Database]
 tags: [SQL, Query, Siswa]
+toc: true
+pin: true
 ---
 
 ### Lembar Kerja Peserta Didik (LKPD)
@@ -162,9 +164,9 @@ INSERT INTO pegawai (nama, departemen, gaji) VALUES
 ```
 
 ### Soal-soal SQL
-1. Memilih Semua Pegawai yang Nama Depannya Dimulai dengan Huruf 'A'
+1. Memilih Semua Pegawai yang Nama Depannya Dimulai dengan Huruf 'S'
 
-2. Memilih Semua Pegawai yang Nama Belakangnya Berakhiran dengan 'to'
+2. Memilih Semua Pegawai yang Nama Belakangnya Berakhiran dengan 'ri'
 
 3. Memilih Semua Pegawai yang Bekerja di Departemen 'Finance' dan Bergaji Lebih dari 8500000
 
@@ -172,9 +174,9 @@ INSERT INTO pegawai (nama, departemen, gaji) VALUES
 
 5. Memilih Semua Pegawai yang Namanya Mengandung Angka
 
-6. Memilih Semua Pegawai yang Nama Depannya Memiliki Huruf 'e' sebagai Huruf Kedua
+6. Memilih Semua Pegawai yang Nama Depannya Memiliki Huruf 'd' sebagai Huruf Ketiga
 
-7. Memilih Semua Pegawai yang Nama Depannya Terdiri dari 5 Huruf dan Huruf Ketiga adalah 'a'
+7. Memilih Semua Pegawai yang Nama Depannya Terdiri dari 6 Huruf dan Huruf Ketiga adalah 'k'
 
 8. Memilih Semua Pegawai yang Nama Depannya Dimulai dengan Huruf 'A' atau 'a' (Case Insensitive)
 
@@ -182,22 +184,22 @@ INSERT INTO pegawai (nama, departemen, gaji) VALUES
 
 10. Menghitung Jumlah Pegawai yang Bekerja di Departemen 'IT'
 
-11. Memilih Semua Pegawai yang Nama Depannya Dimulai dengan Huruf 'S' atau 'T' dan Bekerja di Departemen 'Marketing'
+11. Memilih Semua Pegawai yang Nama Depannya Dimulai dengan Huruf 'D' atau 'A' dan Bekerja di Departemen 'Marketing'
 
-12. Memilih Semua Pegawai yang Namanya Terdiri dari Lebih dari 10 Karakter
+12. Memilih Semua Pegawai yang Namanya Terdiri dari Lebih dari 7 Karakter
 
-13. Memilih Semua Pegawai yang Nama Depannya Tidak Dimulai dengan Huruf 'A'
+13. Memilih Semua Pegawai yang Nama Depannya Tidak Dimulai dengan Huruf 'k'
 
-14. Memilih Semua Pegawai yang Nama Depannya Dimulai dengan Huruf Vokal (A, E, I, O, U)
+14. Memilih Semua Pegawai yang Nama Depannya Dimulai dengan Huruf Vokal (A, F, I, W, U)
 
 15. Memilih Semua Pegawai yang Bergaji 8000000, 8500000, atau 9000000
 
 Jawaban untuk soal-soal di atas dapat dihasilkan dengan menjalankan query-query tersebut pada database yang telah dibuat.
 
 #### Penilaian:
-- Pemahaman Fungsi Operator (20%)
-- Ketepatan Penggunaan Operator LIKE (20%)
-- Ketepatan Penggunaan Operator REGEXP (20%)
-- Kebenaran Hasil Query (40%)
+- Pemahaman Fungsi Operator 
+- Ketepatan Penggunaan Operator LIKE 
+- Ketepatan Penggunaan Operator REGEXP 
+- Kebenaran Hasil Query 
 
 ---
