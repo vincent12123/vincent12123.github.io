@@ -47,6 +47,12 @@ print("Nama Anda adalah", nama, "dan umur Anda", umur)
 
 ### Contoh Program Pemasukan dan Pengeluaran
 
+<video width="640" height="480" controls>
+  <source src="https://tracerstudy.stbapontianak.ac.id/x.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
+
 Berikut adalah contoh program lengkap untuk mencatat pengeluaran dan pemasukan, serta menyimpan data dalam bentuk daftar untuk melacak setiap transaksi:
 
 ```python
