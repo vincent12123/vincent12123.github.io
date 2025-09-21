@@ -1,944 +1,818 @@
 ---
-title: Simple Chat Bot
-date: 2025-08-24
-categories: [Chat, Flask]
-tags: [GeminiAi]
+title: CRUD Laravel 12
+date: 2025-09-21
+categories: [Laravel, CRUD]
+tags: [Laravel]
 pin: true
 ---
-# Tutorial Lengkap: Membuat Chatbot dengan Flask dan Gemini AI
+# Tutorial CRUD Laravel 12 dengan Tailwind CSS 4
 
-## Daftar Isi
-1. [Pengenalan](#pengenalan)
-2. [Prasyarat](#prasyarat)
-3. [Setup Environment](#setup-environment)
-4. [Struktur Project](#struktur-project)
-5. [Backend Development (Flask)](#backend-development-flask)
-6. [Frontend Development](#frontend-development)
-7. [Integrasi Gemini AI](#integrasi-gemini-ai)
-8. [Testing dan Debugging](#testing-dan-debugging)
-9. [Deployment](#deployment)
-10. [Troubleshooting](#troubleshooting)
+## Overview
 
----
+Tutorial CRUD Laravel 12 ini akan memandu Anda membangun aplikasi manajemen produk sederhana namun fungsional dengan tampilan responsif menggunakan **Tailwind CSS 4**. Aplikasi ini akan menjadi contoh praktis implementasi konsep **MVC (Model-View-Controller)** dalam ekosistem Laravel.
 
-## Pengenalan
+Kita akan membangun aplikasi dengan studi kasus pengelolaan data produk yang memiliki atribut **`name`**, **`code`**, **`stock`**, dan **`price`**. Sepanjang tutorial, kita akan mengimplementasikan seluruh siklus pengembangan—mulai dari konfigurasi database, pembuatan model, hingga implementasi antarmuka pengguna yang intuitif.
 
-Dalam tutorial ini, kita akan membangun chatbot sederhana namun powerful menggunakan:
-- **Flask** sebagai web framework backend
-- **Google Gemini AI** sebagai AI engine
-- **HTML/CSS/JavaScript** untuk frontend
-- **Bootstrap** untuk styling yang responsive
+-----
 
-### Apa yang akan kita buat?
-- Chatbot dengan interface yang modern dan responsive
-- Real-time conversation dengan AI
-- History percakapan
-- Error handling yang baik
-- Mobile-friendly interface
+## Apa yang akan dipelajari
 
----
+Dalam tutorial ini, Anda akan mempelajari:
 
-## Prasyarat
+  * Cara membuat project Laravel 12 baru dengan composer.
+  * Konfigurasi database MySQL untuk aplikasi Laravel.
+  * Pembuatan model dan migrasi database sesuai kebutuhan aplikasi.
+  * Implementasi `Controller` dengan metode `Resource` untuk operasi CRUD terstruktur.
+  * Pembuatan tampilan responsif menggunakan Blade template engine dan Tailwind CSS.
+  * Validasi data input untuk menjaga integritas dan keamanan aplikasi.
+  * Penggunaan `route resource` untuk mengelola endpoint API secara efisien.
+  * Pengelolaan relasi antar data dengan Eloquent ORM.
+  * Penerapan notifikasi *flash message* untuk feedback pengguna yang lebih baik.
 
-### Software yang Dibutuhkan:
-- Python 3.8 atau lebih baru
-- Text editor (VS Code, Sublime, dll)
-- Browser modern
-- Git (opsional)
+-----
 
-### Pengetahuan yang Diperlukan:
-- Dasar Python
-- HTML/CSS dasar
-- JavaScript dasar (akan dijelaskan)
-- Konsep dasar web development
+## Apa yang perlu dipersiapkan
 
----
+Sebelum memulai tutorial ini, pastikan Anda telah menyiapkan:
 
-## Setup Environment
+  * **PHP versi 8.2** atau lebih tinggi (persyaratan minimal Laravel 12).
+  * **Composer** sebagai package manager untuk PHP.
+  * **MySQL** atau database serupa yang kompatibel dengan Laravel.
+  * **Text editor** atau IDE (disarankan: Visual Studio Code dengan ekstensi PHP).
+  * **Browser web** modern untuk pengujian aplikasi.
+  * Pengetahuan dasar **PHP** dan konsep **MVC**.
+  * Pemahaman dasar **HTML** dan **CSS**.
+  * Akses ke **Terminal** atau **Command Prompt**.
 
-### 1. Membuat Virtual Environment
+-----
+
+## Apa yang akan kita build
+
+Melalui tutorial ini, Anda akan membangun aplikasi manajemen produk lengkap dengan fitur:
+
+  * Halaman daftar produk dengan fitur **pagination** untuk navigasi data yang efisien.
+  * Form untuk **menambahkan produk baru** dengan validasi input.
+  * Halaman **detail** untuk melihat informasi lengkap produk.
+  * Form untuk **mengedit dan memperbarui** data produk yang sudah ada.
+  * Fungsionalitas **hapus data** dengan konfirmasi untuk mencegah penghapusan yang tidak disengaja.
+  * Antarmuka **responsif** menggunakan Tailwind CSS untuk pengalaman pengguna yang optimal di berbagai perangkat.
+  * **Validasi data** di sisi server untuk memastikan integritas informasi.
+  * **Notifikasi interaktif** untuk memberi tahu pengguna tentang hasil operasi CRUD.
+
+Tutorial ini akan menunjukkan bagaimana Laravel 12 menyederhanakan pengembangan aplikasi web modern dengan pendekatan yang bersih dan terstruktur. Konsep-konsep yang dipelajari dapat diterapkan untuk berbagai jenis proyek Laravel lainnya, memberikan Anda fondasi solid untuk terus mengembangkan keterampilan web development Anda.
+
+-----
+
+## Step 1: Buat Project Laravel
+
+Buka terminal, lalu jalankan command berikut ini untuk membuat project Laravel baru.
 
 ```bash
-# Navigasi ke direktori project
-cd /home/sukardi/coding/simplechatbot
-
-# Buat virtual environment
-python3 -m venv .venv
-
-# Aktivasi virtual environment
-source .venv/bin/activate  # Linux/Mac
-# atau
-# .venv\Scripts\activate  # Windows
+composer create-project --prefer-dist laravel/laravel sample-app
 ```
 
-### 2. Install Dependencies
+Kita tunggu sampai proses *create project* menggunakan composer selesai. Setelah selesai, kita pindah dulu ke direktori project.
 
-Buat file `requirements.txt`:
-```txt
-flask==2.3.3
-google-generativeai==0.3.2
-python-dotenv==1.0.0
-gunicorn==21.2.0
-Werkzeug==2.3.7
-```
-
-Install semua dependencies:
 ```bash
-pip install -r requirements.txt
+cd sample-app
 ```
 
-### 3. Setup Environment Variables
+Lalu kita buka project kita di code editor. Di sini saya buka direktori project menggunakan Visual Studio Code dengan menjalankan command berikut.
 
-Buat file `.env`:
 ```bash
-cp .env.example .env
+code .
 ```
 
-Edit `.env` dan masukkan API key Gemini:
-```env
-GEMINI_API_KEY=your_actual_gemini_api_key_here
-FLASK_ENV=development
-FLASK_DEBUG=True
-SECRET_KEY=your_secret_key_here
+Setelah kita menjalankan command di atas, direktori project akan terbuka di Visual Studio Code.
+
+-----
+
+## Step 2: Setup Konfigurasi Database
+
+Pada step ini kita akan mengatur konfigurasi database untuk project kita. Buka file `.env`, lalu sesuaikan konfigurasi database.
+
+```ini
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=db_belajar_laravel
+DB_USERNAME=root
+DB_PASSWORD=password
 ```
 
-### 4. Mendapatkan Gemini API Key
+Di baris kode di atas, kita atur database yang akan kita gunakan adalah **`mysql`** dengan nama database **`db_belajar_laravel`** dan credentials mysql. Untuk credential mysql (username dan password) sesuaikan dengan credential mysql di komputer masing-masing.
 
-1. Kunjungi [Google AI Studio](https://makersuite.google.com/app/apikey)
-2. Login dengan akun Google
-3. Klik "Create API Key"
-4. Copy API key dan paste ke file `.env`
+-----
 
----
+## Step 3: Buat Model dan Migration
 
-## Struktur Project
+Pada step ini kita buat file model dan migration sesuai dengan studi kasus, yaitu model dan migration untuk data produk. Untuk membuat file model dan migration, buka terminal lalu jalankan command berikut ini.
 
-```
-simplechatbot/
-├── app.py                 # Flask application utama
-├── requirements.txt       # Dependencies Python
-├── .env                  # Environment variables (jangan commit!)
-├── .env.example          # Template environment variables
-├── .gitignore           # File yang diabaikan Git
-├── README.md            # Dokumentasi project
-├── templates/
-│   └── index.html       # Template HTML utama
-└── static/
-    ├── style.css        # CSS styling
-    └── script.js        # JavaScript functionality
+```bash
+php artisan make:model Product -m
 ```
 
----
+Output yang ditampilkan:
 
-## Backend Development (Flask)
+```
+$ php artisan make:model Product -m
 
-### 1. Setup Flask Application (`app.py`)
+   INFO  Model [app/Models/Product.php] created successfully.  
 
-```python
-import os
-import google.generativeai as genai
-from flask import Flask, render_template, request, jsonify
-from dotenv import load_dotenv
-
-# Load environment variables dari file .env
-load_dotenv()
-
-# Inisialisasi Flask app
-app = Flask(__name__)
+   INFO  Migration [database/migrations/2025_02_26_232350_create_products_table.php] created successfully.
 ```
 
-**Penjelasan:**
-- `load_dotenv()`: Memuat variabel environment dari file `.env`
-- `Flask(__name__)`: Membuat instance Flask app
+Selanjutnya kita buka file `app/Models/Product.php`, lalu kita tambahkan atribut `$fillable` di class `Product`.
 
-### 2. Konfigurasi Gemini AI
+```php
+<?php
+namespace App\Models;
 
-```python
-# Configure Gemini dengan API key dari environment variable
-genai.configure(api_key=os.getenv('GEMINI_API_KEY'))
+use Illuminate\Database\Eloquent\Model;
 
-# Initialize Gemini model - menggunakan model terbaru
-model = genai.GenerativeModel('gemini-2.5-flash')
-
-# Store conversation history dalam memory
-conversation_history = []
+class Product extends Model
+{
+    protected $fillable = [
+        'code',
+        'name',
+        'price',
+        'stock',
+    ];
+}
 ```
 
-**Penjelasan:**
-- `genai.configure()`: Setup API key untuk Gemini
-- `GenerativeModel()`: Inisialisasi model AI
-- `conversation_history`: List untuk menyimpan riwayat percakapan
+Save kembali file `app/Models/Product.php`. Pada baris kode di atas, kita atur supaya kolom `code`, `name`, `price` dan `stock` dapat diisi secara massal melalui input pengguna atau data yang dikirimkan dari form.
 
-### 3. Route untuk Halaman Utama
+Selanjutnya kita sesuaikan file migration dengan studi kasus tutorial ini. Buka file migration `database/migrations/xxxx_xx_xx_xxxxxx_create_products_table.php`, lalu kita tambahkan field `code`, `name`, `price` dan `stock` untuk table `products`.
 
-```python
-@app.route('/')
-def index():
-    """Render halaman utama chatbot"""
-    return render_template('index.html')
+```php
+<?php
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('products', function (Blueprint $table) {
+            $table->id();
+            $table->string('code')->unique();
+            $table->string('name');
+            $table->decimal('price', 20, 2);
+            $table->integer('stock');
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('products');
+    }
+};
 ```
 
-**Penjelasan:**
-- Route ini akan menampilkan file `templates/index.html` ketika user mengakses URL root
+Save kembali file `database/migrations/xxxx_xx_xx_xxxxxx_create_products_table.php`.
 
-### 4. API Endpoint untuk Chat
+-----
 
-```python
-@app.route('/chat', methods=['POST'])
-def chat():
-    """Handle pesan chat dari user"""
-    try:
-        # Ambil pesan dari request JSON
-        user_message = request.json.get('message', '').strip()
-        
-        # Validasi pesan tidak kosong
-        if not user_message:
-            return jsonify({'error': 'Message cannot be empty'}), 400
-        
-        # Tambah pesan user ke history
-        conversation_history.append(f"User: {user_message}")
-        
-        # Buat context dari 10 pesan terakhir untuk memberikan konteks ke AI
-        context = "\n".join(conversation_history[-10:])
-        
-        # Generate response menggunakan Gemini
-        response = model.generate_content(f"{context}\nUser: {user_message}")
-        bot_response = response.text
-        
-        # Tambah response bot ke history
-        conversation_history.append(f"Assistant: {bot_response}")
-        
-        # Return response dalam format JSON
-        return jsonify({
-            'response': bot_response,
-            'status': 'success'
-        })
-        
-    except Exception as e:
-        # Handle error dan return error message
-        return jsonify({
-            'error': f'Error generating response: {str(e)}',
-            'status': 'error'
-        }), 500
+## Step 4: Run Migration
+
+Pada step ini kita jalankan migration command untuk menambahkan table `products` di database `db_belajar_laravel`. Apabila teman-teman belum membuat file `db_belajar_laravel`, kita bisa membuat langsung ketika kita menjalankan migration command.
+
+Sekarang kita buka kembali terminal, lalu jalankan migration command.
+
+```bash
+php artisan migrate
 ```
 
-**Penjelasan Detail:**
-- `request.json.get('message')`: Mengambil pesan dari POST request
-- `conversation_history[-10:]`: Mengambil 10 pesan terakhir untuk konteks
-- `model.generate_content()`: Memanggil Gemini AI untuk generate response
-- Error handling dengan try-except untuk menangani error
+Apabila kita belum membuat database, akan tampil prompt untuk membuat database.
 
-### 5. API Endpoint Tambahan
+```
+$ php artisan migrate
 
-```python
-@app.route('/clear', methods=['POST'])
-def clear_history():
-    """Clear riwayat percakapan"""
-    global conversation_history
-    conversation_history = []
-    return jsonify({'status': 'success', 'message': 'History cleared'})
+   WARN  The database 'db_belajar_laravel' does not exist on the 'mysql' connection.  
 
-@app.route('/health')
-def health_check():
-    """Health check endpoint untuk monitoring"""
-    return jsonify({'status': 'healthy'})
+ ┌ Would you like to create it? ────────────────────────────────┐
+ │ ● Yes / ○ No                                                 │
 ```
 
-### 6. Main Function
+Selanjutnya kita pilih **`yes`**, lalu tekan `enter` untuk melanjutkan.
 
-```python
-if __name__ == '__main__':
-    # Check apakah API key sudah diset
-    if not os.getenv('GEMINI_API_KEY'):
-        print("Warning: GEMINI_API_KEY not found in environment variables")
-        print("Please set your Gemini API key in the .env file")
-    
-    # Jalankan Flask app
-    app.run(debug=True, host='0.0.0.0', port=5000)
+```
+$ php artisan migrate
+
+   WARN  The database 'db_belajar_laravel' does not exist on the 'mysql' connection.  
+
+ ┌ Would you like to create it? ────────────────────────────────┐
+ │ Yes                                                          │
+ └──────────────────────────────────────────────────────────────┘
+
+   INFO  Preparing database.  
+
+  Creating migration table ...................................... 41.65ms DONE
+
+   INFO  Running migrations.  
+
+  0001_01_01_000000_create_users_table ......................... 144.60ms DONE
+  0001_01_01_000001_create_cache_table .......................... 55.96ms DONE
+  0001_01_01_000002_create_jobs_table .......................... 119.18ms DONE
+  2025_02_26_232350_create_products_table ....................... 52.55ms DONE
 ```
 
----
+Setelah selesai, kita bisa lihat ada database dan juga table ketika kita cek menggunakan tools seperti phpMyAdmin ataupun menjalankan command SQL untuk cek database.
 
-## Frontend Development
+-----
 
-### 1. HTML Template (`templates/index.html`)
+## Step 5: Coding Fitur View Daftar Product
 
-#### Head Section:
+Persiapan setup sudah selesai, sekarang kita masuk ke coding fitur yang pertama, yaitu fitur view daftar produk. Untuk membuat fitur pertama, kita buat controller untuk menangani proses manage product.
+
+```bash
+php artisan make:controller ProductController --model=Product --resource
+```
+
+Output:
+
+```
+$ php artisan make:controller ProductController --model=Product --resource
+
+   INFO  Controller [app/Http/Controllers/ProductController.php] created successfully.
+```
+
+Selanjutnya kita buka file controller `app/Http/Controllers/ProductController.php`. Pada class `ProductController`, kita modifikasi method `index()`.
+
+```php
+public function index()
+{
+    $products = Product::latest()->paginate(10);
+    return view('products.index', compact('products'));
+}
+```
+
+Save kembali file `app/Http/Controllers/ProductController.php`. Selanjutnya kita buat file untuk menampilkan daftar produk, yaitu view `resources/views/products/index.blade.php`, lalu tambahkan baris kode berikut ini.
+
 ```html
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Chatbot - Gemini AI</title>
-    <!-- Bootstrap CSS untuk styling -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome untuk icons -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>Product List - Tutorial CRUD Laravel 12 </title>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
 </head>
-```
-
-#### Header Chat:
-```html
-<div class="chat-header">
-    <div class="d-flex justify-content-between align-items-center">
-        <div class="d-flex align-items-center">
-            <i class="fas fa-robot me-2 text-primary"></i>
-            <h4 class="mb-0">Simple Chatbot</h4>
-            <small class="text-muted ms-2">Powered by Gemini AI</small>
+<body>
+<div class="container mx-auto mt-10 mb-10 px-10">
+    <div class="grid grid-cols-8 gap-4 mb-4 p-5">
+        <div class="col-span-4 mt-2">
+            <h1 class="text-3xl font-bold">
+                DAFTAR PRODUCT
+            </h1>
         </div>
-        <button class="btn btn-outline-danger btn-sm" onclick="clearChat()">
-            <i class="fas fa-trash me-1"></i> Clear Chat
-        </button>
-    </div>
-</div>
-```
-
-#### Chat Messages Area:
-```html
-<div id="chatMessages" class="chat-messages">
-    <div class="message bot-message">
-        <div class="message-avatar">
-            <i class="fas fa-robot"></i>
-        </div>
-        <div class="message-content">
-            <div class="message-text">
-                Halo! Saya adalah chatbot yang didukung oleh Gemini AI. Apa yang bisa saya bantu hari ini?
+        <div class="col-span-4">
+            <div class="flex justify-end">
+                <a href="{{ route('product.create') }}"
+                   class="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
+                   id="add-product-btn">Add Product</a>
             </div>
-            <div class="message-time" id="initial-time"></div>
         </div>
     </div>
-</div>
-```
-
-#### Input Area:
-```html
-<div class="chat-input">
-    <div class="input-group">
-        <input type="text" 
-               id="messageInput" 
-               class="form-control" 
-               placeholder="Ketik pesan Anda disini..." 
-               autocomplete="off">
-        <button class="btn btn-primary" 
-                id="sendButton" 
-                onclick="sendMessage()">
-            <i class="fas fa-paper-plane"></i>
-        </button>
-    </div>
-</div>
-```
-
-### 2. CSS Styling (`static/style.css`)
-
-#### CSS Variables:
-```css
-:root {
-    --primary-color: #007bff;
-    --secondary-color: #6c757d;
-    --success-color: #28a745;
-    --danger-color: #dc3545;
-    --border-radius: 15px;
-    --shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
-```
-
-#### Body Styling:
-```css
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    margin: 0;
-    padding: 0;
-    height: 100vh;
-    overflow: hidden;
-}
-```
-
-#### Chat Container:
-```css
-.chat-container {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border-radius: 0 0 var(--border-radius) var(--border-radius);
-    height: calc(100vh - 140px);
-    display: flex;
-    flex-direction: column;
-    box-shadow: var(--shadow);
-}
-```
-
-#### Message Styling:
-```css
-.message {
-    display: flex;
-    margin-bottom: 20px;
-    animation: messageSlide 0.3s ease-out;
-}
-
-@keyframes messageSlide {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-```
-
-### 3. JavaScript Functionality (`static/script.js`)
-
-#### Global Variables:
-```javascript
-let isLoading = false;
-const loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'), {
-    keyboard: false,
-    backdrop: 'static'
-});
-```
-
-#### Initialize App:
-```javascript
-document.addEventListener('DOMContentLoaded', function() {
-    // Set initial timestamp
-    document.getElementById('initial-time').textContent = getCurrentTime();
-    
-    // Focus pada input
-    document.getElementById('messageInput').focus();
-    
-    // Event listener untuk Enter key
-    document.getElementById('messageInput').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault();
-            sendMessage();
-        }
-    });
-});
-```
-
-#### Send Message Function:
-```javascript
-async function sendMessage() {
-    const messageInput = document.getElementById('messageInput');
-    const message = messageInput.value.trim();
-    
-    if (!message || isLoading) {
-        return;
-    }
-    
-    // Disable input dan button
-    setLoadingState(true);
-    
-    // Tambah pesan user ke chat
-    addMessage(message, 'user');
-    
-    // Clear input
-    messageInput.value = '';
-    
-    // Show loading modal
-    loadingModal.show();
-    
-    try {
-        // Kirim pesan ke backend
-        const response = await fetch('/chat', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ message: message })
-        });
-        
-        const data = await response.json();
-        
-        if (response.ok && data.status === 'success') {
-            // Tambah response bot ke chat
-            addMessage(data.response, 'bot');
-        } else {
-            // Show error message
-            addMessage(`Maaf, terjadi kesalahan: ${data.error}`, 'bot', 'error');
-        }
-        
-    } catch (error) {
-        console.error('Error:', error);
-        addMessage('Maaf, terjadi kesalahan koneksi. Silakan coba lagi.', 'bot', 'error');
-    } finally {
-        // Hide loading modal dan restore input
-        loadingModal.hide();
-        setLoadingState(false);
-        messageInput.focus();
-    }
-}
-```
-
-#### Add Message Function:
-```javascript
-function addMessage(message, sender, type = 'normal') {
-    const chatMessages = document.getElementById('chatMessages');
-    const messageDiv = document.createElement('div');
-    
-    const isUser = sender === 'user';
-    const messageClass = isUser ? 'user-message' : 'bot-message';
-    const avatarIcon = isUser ? 'fas fa-user' : 'fas fa-robot';
-    
-    messageDiv.className = `message ${messageClass}`;
-    messageDiv.innerHTML = `
-        <div class="message-avatar">
-            <i class="${avatarIcon}"></i>
-        </div>
-        <div class="message-content">
-            <div class="message-text ${type === 'error' ? 'error-message' : ''}">
-                ${formatMessage(message)}
+    <div class="bg-white p-5 rounded shadow-sm">
+        @if (session('success'))
+            <div class="p-3 rounded bg-green-500 text-green-100 mb-4">
+                {{ session('success') }}
             </div>
-            <div class="message-time">${getCurrentTime()}</div>
+        @endif
+        <div class="relative overflow-x-auto">
+            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="px-6 py-3">No</th>
+                    <th scope="col" class="px-6 py-3">Product name</th>
+                    <th scope="col" class="px-6 py-3">Code</th>
+                    <th scope="col" class="px-6 py-3">Stock</th>
+                    <th scope="col" class="px-6 py-3">Price</th>
+                    <th scope="col" class="px-6 py-3">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                @forelse ($products as $product)
+                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
+                        <td class="px-6 py-4">{{ $loop->iteration }}</td>
+                        <td class="px-6 py-4">{{ $product->name}}</td>
+                        <td class="px-6 py-4">{{ $product->code }}</td>
+                        <td class="px-6 py-4">{{ $product->stock }}</td>
+                        <td class="px-6 py-4">{{ $product->price}}</td>
+                        <td class="px-6 py-4">
+                            <form onsubmit="return confirm('Apakah Anda Yakin ?');"
+                                  action="{{ route('product.destroy', $product) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <a href="{{ route('product.show', $product) }}" id="{{ $product->id }}-edit-btn"
+                                   class="inline-block px-6 py-2.5 bg-blue-400 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-blue-500 hover:shadow-lg focus:bg-blue-500 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-600 active:shadow-lg transition duration-150 ease-in-out">View</a>
+                                <a href="{{ route('product.edit', $product) }}" id="{{ $product->id }}-edit-btn"
+                                   class="inline-block px-6 py-2.5 bg-blue-400 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-blue-500 hover:shadow-lg focus:bg-blue-500 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-600 active:shadow-lg transition duration-150 ease-in-out">Edit</a>
+                                <button type="submit"
+                                        class="inline-block px-6 py-2.5 bg-red-600 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-red-700 hover:shadow-lg focus:bg-red-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-red-800 active:shadow-lg transition duration-150 ease-in-out"
+                                        id="{{ $product->id }}-delete-btn">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td class="text-center text-sm text-gray-900 px-6 py-4 whitespace-nowrap" colspan="6">
+                            Data Empty
+                        </td>
+                    </tr>
+                @endforelse
+                </tbody>
+            </table>
         </div>
-    `;
-    
-    chatMessages.appendChild(messageDiv);
-    scrollToBottom();
+    </div>
+    <div class="mt-3">
+        {{ $products->links() }}
+    </div>
+</div>
+</body>
+</html>
+```
+
+Save kembali `resources/views/products/index.blade.php`. Setelah coding controller dan view selesai, kita tambahkan route baru di file `routes/web.php`.
+
+```php
+Route::resource('product', \App\Http\Controllers\ProductController::class);
+```
+
+Untuk mengecek route yang sudah ditambahkan kita bisa jalankan command berikut ini.
+
+```bash
+php artisan route:list
+```
+
+Output:
+
+```
+$ php artisan route:list
+
+  GET|HEAD        / .......................................................... 
+  GET|HEAD        product ............ product.index › ProductController@index
+  POST            product ............ product.store › ProductController@store
+  GET|HEAD        product/create ... product.create › ProductController@create
+  GET|HEAD        product/{product} .... product.show › ProductController@show
+  PUT|PATCH       product/{product} product.update › ProductController@update
+  DELETE          product/{product} product.destroy › ProductController@destr…
+  GET|HEAD        product/{product}/edit product.edit › ProductController@edit
+  GET|HEAD        storage/{path} ............................... storage.local
+  GET|HEAD        up ......................................................... 
+
+                                                           Showing [10] routes
+```
+
+Seperti yang terlihat pada output yang ditampilkan, route yang kita tambahkan akan menangani semua proses untuk manage product.
+
+-----
+
+## Step 6: Coding Fitur Create Data
+
+Pada step ini kita akan menambahkan fitur untuk menambahkan data produk. Kita buka kembali `app/Http/Controllers/ProductController.php`, lalu kita modifikasi method `create()`.
+
+```php
+public function create()
+{
+    return view('products.create');
 }
 ```
 
----
+Seperti yang terlihat pada baris kode di atas, file view untuk menampilkan form create data produk adalah `resources/views/products/create.blade.php`. Buat file `resources/views/products/create.blade.php`, lalu kita coding baris kode berikut ini.
 
-## Integrasi Gemini AI
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>Create New Product - Tutorial CRUD Laravel 12 </title>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+</head>
+<body>
+<div class="container mx-auto mt-10 mb-10 px-10">
+    <div class="grid grid-cols-8 gap-4 p-5">
+        <div class="col-span-4 mt-2">
+            <h1 class="text-3xl font-bold">
+                CREATE NEW PRODUCT
+            </h1>
+        </div>
+    </div>
+    <div class="bg-white p-5 rounded shadow-sm">
+        <form action="{{ route('product.store') }}" method="POST">
+            @csrf
 
-### 1. Setup API Key
+            <div class="mb-5">
+                <label for="name">Name</label>
+                <input type="text" class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded-full transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name="name" value="{{ old('name') }}" required>
+                @error('name')
+                <div class="bg-red-400 p-2 shadow-sm rounded mt-2">
+                    {{ $message }}
+                </div>
+                @enderror
+            </div>
 
-```python
-import google.generativeai as genai
+            <div class="mb-5">
+                <label for="code">Code</label>
+                <input type="text" class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded-full transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name="code" value="{{ old('code') }}" required>
+                @error('code')
+                <div class="bg-red-400 p-2 shadow-sm rounded mt-2">
+                    {{ $message }}
+                </div>
+                @enderror
+            </div>
 
-# Konfigurasi API key
-genai.configure(api_key=os.getenv('GEMINI_API_KEY'))
+            <div class="mb-5">
+                <label for="price">Price</label>
+                <input type="text" class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded-full transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name="price" value="{{ old('price') }}" required>
+                @error('price')
+                <div class="bg-red-400 p-2 shadow-sm rounded mt-2">
+                    {{ $message }}
+                </div>
+                @enderror
+            </div>
+
+            <div class="mb-5">
+                <label for="stock">Stock</label>
+                <input type="text" class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded-full transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name="stock" value="{{ old('stock') }}" required>
+                @error('stock')
+                <div class="bg-red-400 p-2 shadow-sm rounded mt-2">
+                    {{ $message }}
+                </div>
+                @enderror
+            </div>
+
+            <div class="mt-3">
+                <button type="submit" class="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
+                    Save
+                </button>
+                <a href="{{ route('product.index') }}" class="inline-block px-6 py-2.5 bg-gray-200 text-gray-700 font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-gray-300 hover:shadow-lg focus:bg-gray-300 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-400 active:shadow-lg transition duration-150 ease-in-out">back</a>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>
 ```
 
-### 2. Inisialisasi Model
+Save kembali file `resources/views/products/create.blade.php`. Proses tambah data pada form diarahkan ke route `post.store` yang diarahkan ke method `store()`. Buka kembali `app/Http/Controllers/ProductController.php`, lalu kita modifikasi method `store()`.
 
-```python
-# Gunakan model terbaru Gemini
-model = genai.GenerativeModel('gemini-2.5-flash')
-```
+```php
+public function store(Request $request)
+{
+    $request->validate([
+        'name' => 'required',
+        'code' => 'required|unique:products',
+        'price' => 'required',
+        'stock' => 'required',
+    ]);
 
-**Model Gemini yang tersedia:**
-- `gemini-pro`: Model text generasi umum
-- `gemini-pro-vision`: Model dengan kemampuan vision
-- `gemini-2.5-flash`: Model terbaru yang lebih cepat
+    Product::create([
+        'name' => $request->name,
+        'code' => $request->code,
+        'price' => $request->price,
+        'stock' => $request->stock,
+    ]);
 
-### 3. Generate Content
-
-```python
-# Generate response dengan konteks
-response = model.generate_content(f"{context}\nUser: {user_message}")
-bot_response = response.text
-```
-
-### 4. Handling Context
-
-```python
-# Menyimpan riwayat percakapan untuk konteks
-conversation_history.append(f"User: {user_message}")
-context = "\n".join(conversation_history[-10:])  # 10 pesan terakhir
-conversation_history.append(f"Assistant: {bot_response}")
-```
-
----
-
-## Testing dan Debugging
-
-### 1. Menjalankan Aplikasi
-
-```bash
-# Pastikan virtual environment aktif
-source .venv/bin/activate
-
-# Jalankan aplikasi
-python app.py
-```
-
-### 2. Testing Manual
-
-1. Buka browser dan akses `http://localhost:5000`
-2. Test kirim pesan sederhana: "Halo"
-3. Test pesan yang lebih kompleks
-4. Test fitur clear chat
-5. Test error handling (matikan internet)
-
-### 3. Debug Common Issues
-
-#### API Key Error:
-```python
-# Tambah debug print
-if not os.getenv('GEMINI_API_KEY'):
-    print("API key tidak ditemukan!")
-    print("Pastikan file .env sudah dibuat dan berisi GEMINI_API_KEY")
-```
-
-#### Connection Error:
-```javascript
-// Di JavaScript, tambah error handling
-catch (error) {
-    console.error('Error details:', error);
-    addMessage('Koneksi bermasalah. Cek console untuk detail.', 'bot', 'error');
+    return redirect()->route('product.index')
+        ->with('success','Product created successfully.');
 }
 ```
 
-### 4. Logging
+Save kembali `app/Http/Controllers/ProductController.php`.
 
-```python
-import logging
+-----
 
-# Setup logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+## Step 7: Coding Fitur View Satu Data
 
-@app.route('/chat', methods=['POST'])
-def chat():
-    try:
-        user_message = request.json.get('message', '').strip()
-        logger.info(f"Received message: {user_message}")
-        
-        # ... rest of code
-        
-        logger.info(f"Generated response: {bot_response}")
-        
-    except Exception as e:
-        logger.error(f"Error in chat endpoint: {str(e)}")
+Untuk menambahkan fitur view satu data, kita modifikasi kembali controller `app/Http/Controllers/ProductController.php`. Pada controller kita modifikasi method yang menangani fitur tersebut, yaitu method `show()`.
+
+```php
+public function show(Product $product)
+{
+    return view('products.show',compact('product'));
+}
 ```
 
----
+Selanjutnya kita buat file view `resources/views/products/show.blade.php`, lalu coding baris kode berikut ini.
 
-## Deployment
-
-### 1. Production Setup
-
-#### Gunicorn Configuration (`gunicorn.conf.py`):
-```python
-bind = "0.0.0.0:5000"
-workers = 4
-timeout = 120
-keepalive = 60
-max_requests = 1000
-max_requests_jitter = 100
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>Product Detail {{ $product->name }} - Tutorial CRUD Laravel 12 </title>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+</head>
+<body>
+<div class="container mx-auto mt-10 mb-10 px-10">
+    <div class="grid grid-cols-8 gap-4 mb-4 p-5">
+        <div class="col-span-4 mt-2">
+            <h1 class="text-3xl font-bold">
+                Product Detail {{ $product->name }}
+            </h1>
+        </div>
+    </div>
+    <div class="bg-white p-5 rounded shadow-sm">
+        <div class="relative overflow-x-auto">
+            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <tbody>
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        Product Name
+                    </th>
+                    <td class="px-6 py-4">{{ $product->name}}</td>
+                </tr>
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        Product Code
+                    </th>
+                    <td class="px-6 py-4">{{ $product->code }}</td>
+                </tr>
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        Stock
+                    </th>
+                    <td class="px-6 py-4">{{ $product->stock }}</td>
+                </tr>
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        Price
+                    </th>
+                    <td class="px-6 py-4">{{ $product->price }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <a href="{{ route('product.index') }}" class="mt-3 inline-block px-6 py-2.5 bg-gray-200 text-gray-700 font-medium text-xs leading-tight uppercase rounded-full ">back</a>
+    <a href="{{ route('product.edit', $product) }}" class="inline-block px-6 py-2.5 bg-blue-400 text-white font-medium text-xs leading-tight uppercase rounded-full" id="edit-product-btn">Edit Product</a>
+</div>
+</body>
+</html>
 ```
 
-#### Run dengan Gunicorn:
-```bash
-gunicorn -c gunicorn.conf.py app:app
+Save kembali `resources/views/products/show.blade.php`.
+
+-----
+
+## Step 8: Coding Fitur Update Data
+
+Buka kembali `app/Http/Controllers/ProductController.php`. Selanjutnya kita modifikasi method `edit()` untuk menampilkan form edit data produk.
+
+```php
+public function edit(Product $product)
+{
+    return view('products.edit',compact('product'));
+}
 ```
 
-### 2. Deploy ke Heroku
+Setelah selesai, selanjutnya kita buat file view `resources/views/products/edit.blade.php`.
 
-#### Procfile:
-```
-web: gunicorn app:app
-```
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>EDIT Product - Tutorial CRUD Laravel 12 </title>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+</head>
+<body>
+<div class="container mx-auto mt-10 mb-10 px-10">
+    <div class="grid grid-cols-8 gap-4 p-5">
+        <div class="col-span-4 mt-2">
+            <h1 class="text-3xl font-bold">
+                EDIT PRODUCT
+            </h1>
+        </div>
+    </div>
+    <div class="bg-white p-5 rounded shadow-sm">
+        <form action="{{ route('product.update', $product) }}" method="POST">
+            @csrf
+            @method('PUT')
 
-#### Commands:
-```bash
-# Login ke Heroku
-heroku login
+            <div class="mb-5">
+                <label for="name">Name</label>
+                <input type="text" class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded-full transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name="name" value="{{ old('name', $product->name) }}" required>
+                @error('name')
+                <div class="bg-red-400 p-2 shadow-sm rounded mt-2">{{ $message }}</div>
+                @enderror
+            </div>
 
-# Buat app
-heroku create your-chatbot-app
+            <div class="mb-5">
+                <label for="code">Code</label>
+                <input type="text" class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded-full transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name="code" value="{{ old('code', $product->code) }}" readonly>
+                @error('code')
+                <div class="bg-red-400 p-2 shadow-sm rounded mt-2">{{ $message }}</div>
+                @enderror
+            </div>
 
-# Set environment variables
-heroku config:set GEMINI_API_KEY=your_api_key
+            <div class="mb-5">
+                <label for="price">Price</label>
+                <input type="text" class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded-full transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name="price" value="{{ old('price', $product->price) }}" required>
+                @error('price')
+                <div class="bg-red-400 p-2 shadow-sm rounded mt-2">{{ $message }}</div>
+                @enderror
+            </div>
 
-# Deploy
-git add .
-git commit -m "Initial commit"
-git push heroku main
-```
+            <div class="mb-5">
+                <label for="stock">Stock</label>
+                <input type="text" class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded-full transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name="stock" value="{{ old('stock', $product->stock) }}" required>
+                @error('stock')
+                <div class="bg-red-400 p-2 shadow-sm rounded mt-2">{{ $message }}</div>
+                @enderror
+            </div>
 
-### 3. Deploy ke VPS
-
-#### Setup Script (`deploy.sh`):
-```bash
-#!/bin/bash
-
-# Update system
-sudo apt update && sudo apt upgrade -y
-
-# Install Python
-sudo apt install python3 python3-pip python3-venv -y
-
-# Install Nginx
-sudo apt install nginx -y
-
-# Clone project
-git clone your-repo-url /var/www/chatbot
-
-# Setup virtual environment
-cd /var/www/chatbot
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-
-# Setup systemd service
-sudo cp chatbot.service /etc/systemd/system/
-sudo systemctl enable chatbot
-sudo systemctl start chatbot
-
-# Setup Nginx
-sudo cp nginx.conf /etc/nginx/sites-available/chatbot
-sudo ln -s /etc/nginx/sites-available/chatbot /etc/nginx/sites-enabled/
-sudo systemctl restart nginx
-```
-
-### 4. Environment Variables Production
-
-```bash
-# .env untuk production
-GEMINI_API_KEY=your_production_api_key
-FLASK_ENV=production
-FLASK_DEBUG=False
-SECRET_KEY=your_super_secret_production_key
-```
-
----
-
-## Troubleshooting
-
-### 1. Common Errors
-
-#### "GEMINI_API_KEY not found"
-**Solusi:**
-```bash
-# Check apakah file .env ada
-ls -la .env
-
-# Check isi file .env
-cat .env
-
-# Pastikan tidak ada spasi di sekitar API key
-# Salah: GEMINI_API_KEY = your_key
-# Benar: GEMINI_API_KEY=your_key
+            <div class="mt-3">
+                <button type="submit" class="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
+                    Save Changes
+                </button>
+                <a href="{{ route('product.index') }}" class="inline-block px-6 py-2.5 bg-gray-200 text-gray-700 font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-gray-300 hover:shadow-lg focus:bg-gray-300 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-400 active:shadow-lg transition duration-150 ease-in-out">back</a>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>
 ```
 
-#### "Module not found"
-**Solusi:**
-```bash
-# Check virtual environment aktif
-which python
+Save kembali file `resources/views/products/edit.blade.php`. Pada baris kode di atas, proses update data diarahkan ke route `post.update` yang mengarah ke method `update()`. Sekarang kita lengkapi method `update()` yang menangani proses update data produk.
 
-# Install ulang dependencies
-pip install -r requirements.txt
-
-# Check versi Python
-python --version
-```
-
-#### "Port already in use"
-**Solusi:**
-```bash
-# Cari process yang menggunakan port 5000
-lsof -i :5000
-
-# Kill process
-kill -9 PID_NUMBER
-
-# Atau gunakan port lain
-python app.py --port 5001
-```
-
-### 2. Performance Issues
-
-#### Slow Response Time:
-```python
-# Tambah timeout ke Gemini API
-import asyncio
-
-async def generate_with_timeout(prompt, timeout=30):
-    try:
-        return await asyncio.wait_for(
-            model.generate_content_async(prompt), 
-            timeout=timeout
-        )
-    except asyncio.TimeoutError:
-        return "Maaf, response time terlalu lama. Coba lagi."
-```
-
-#### Memory Issues:
-```python
-# Limit conversation history
-MAX_HISTORY = 20
-
-def add_to_history(message):
-    conversation_history.append(message)
-    if len(conversation_history) > MAX_HISTORY:
-        conversation_history.pop(0)
-```
-
-### 3. Security Issues
-
-#### API Key Security:
-```python
-# Jangan hardcode API key
-# Salah:
-# genai.configure(api_key="AIzaSyC...")
-
-# Benar:
-api_key = os.getenv('GEMINI_API_KEY')
-if not api_key:
-    raise ValueError("GEMINI_API_KEY must be set")
-genai.configure(api_key=api_key)
-```
-
-#### Input Validation:
-```python
-def validate_message(message):
-    if not message or not message.strip():
-        return False, "Message cannot be empty"
+```php
+public function update(Request $request, Product $product)
+{
+    $request->validate([
+        'name' => 'required',
+        'price' => 'required',
+        'stock' => 'required',
+    ]);
     
-    if len(message) > 1000:
-        return False, "Message too long"
-    
-    # Check for malicious content
-    dangerous_patterns = ['<script>', 'javascript:', 'eval(']
-    if any(pattern in message.lower() for pattern in dangerous_patterns):
-        return False, "Invalid content detected"
-    
-    return True, None
+    $product->update([
+        'name' => $request->name,
+        'price' => $request->price,
+        'stock' => $request->stock,
+    ]);
 
-@app.route('/chat', methods=['POST'])
-def chat():
-    user_message = request.json.get('message', '').strip()
-    
-    is_valid, error = validate_message(user_message)
-    if not is_valid:
-        return jsonify({'error': error}), 400
+    return redirect()->route('product.index')
+        ->with('success','Product updated successfully');
+}
 ```
 
----
+Save kembali file `app/Http/Controllers/ProductController.php`.
 
-## Tips dan Best Practices
+-----
 
-### 1. Code Organization
+## Step 9: Coding Fitur Delete Data
 
-```python
-# Gunakan Blueprint untuk organize routes
-from flask import Blueprint
+Sekarang kita coding fitur terakhir dari operasi CRUD, yaitu delete data produk. Untuk menambahkan fitur delete data, kita buka kembali file controller. Pada class `ProductController`, kita modifikasi method `destroy()` yang menangani proses delete data.
 
-chatbot_bp = Blueprint('chatbot', __name__)
-
-@chatbot_bp.route('/chat', methods=['POST'])
-def chat():
-    # chat logic here
-    pass
-
-# Register blueprint
-app.register_blueprint(chatbot_bp)
-```
-
-### 2. Configuration Management
-
-```python
-# config.py
-import os
-
-class Config:
-    SECRET_KEY = os.getenv('SECRET_KEY', 'dev-secret-key')
-    GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
+```php
+public function destroy(Product $product)
+{
+    $product->delete();
     
-class DevelopmentConfig(Config):
-    DEBUG = True
-    
-class ProductionConfig(Config):
-    DEBUG = False
-
-# app.py
-from config import DevelopmentConfig
-
-app.config.from_object(DevelopmentConfig)
+    return redirect()->route('product.index')
+        ->with('success','Product deleted successfully');
+}
 ```
 
-### 3. Error Handling
+Save kembali file `app/Http/Controllers/ProductController.php`.
 
-```python
-@app.errorhandler(404)
-def not_found(error):
-    return jsonify({'error': 'Endpoint not found'}), 404
+-----
 
-@app.errorhandler(500)
-def internal_error(error):
-    return jsonify({'error': 'Internal server error'}), 500
+## Step 10: Uji Coba
+
+Setelah menyelesaikan semua langkah coding fitur CRUD untuk aplikasi manajemen produk Laravel 12, saatnya kita menguji aplikasi yang telah kita buat. Berikut ini langkah-langkah untuk melakukan uji coba:
+
+### Jalankan Server Laravel
+
+Pertama, buka terminal dan jalankan server Laravel dengan menjalankan perintah:
+
+```bash
+php artisan serve
 ```
 
-### 4. Rate Limiting
+Output:
 
-```python
-from flask_limiter import Limiter
-from flask_limiter.util import get_remote_address
+```
+$ php artisan serve
 
-limiter = Limiter(
-    app,
-    key_func=get_remote_address,
-    default_limits=["100 per hour"]
-)
+   INFO  Server running on [http://127.0.0.1:8000].  
 
-@app.route('/chat', methods=['POST'])
-@limiter.limit("10 per minute")
-def chat():
-    # chat logic
-    pass
+  Press Ctrl+C to stop the server
 ```
 
----
+### Akses Aplikasi di Browser
 
-## Pengembangan Selanjutnya
+Buka browser dan akses URL **`http://127.0.0.1:8000/product`** untuk melihat halaman daftar produk. Pada awalnya, halaman akan menampilkan "Data Empty" karena belum ada data produk yang ditambahkan.
 
-### 1. Fitur Tambahan
+### Menambahkan Data Produk Baru
 
-- **User Authentication**: Login/logout system
-- **Chat History Persistence**: Simpan ke database
-- **Multiple Chat Rooms**: Support multiple conversations
-- **File Upload**: Upload gambar untuk Gemini Vision
-- **Voice Chat**: Speech-to-text integration
+  * Klik tombol "**Add Product**" di bagian kanan atas halaman.
+  * Isi form dengan data produk contoh:
+      * **Name**: Laptop ASUS ROG
+      * **Code**: LP001
+      * **Price**: 15000000
+      * **Stock**: 10
+  * Klik tombol "**Save**" untuk menyimpan data.
+  * Sistem akan menampilkan halaman daftar produk dengan notifikasi "*Product created successfully*".
 
-### 2. Improvements
+### Melihat Detail Produk
 
-- **Caching**: Redis untuk cache response
-- **WebSocket**: Real-time communication
-- **Mobile App**: React Native atau Flutter
-- **Analytics**: Track usage dan performance
+  * Pada halaman daftar produk, klik tombol "**View**" pada produk yang ingin dilihat.
+  * Sistem akan menampilkan halaman detail produk dengan informasi lengkap.
 
-### 3. Advanced Features
+### Mengedit Data Produk
 
-```python
-# Streaming response
-@app.route('/chat-stream', methods=['POST'])
-def chat_stream():
-    def generate():
-        for chunk in model.generate_content_stream(prompt):
-            yield f"data: {chunk.text}\n\n"
-    
-    return Response(generate(), mimetype='text/plain')
-```
+  * Dari halaman daftar produk, klik tombol "**Edit**" pada produk yang ingin diubah.
+  * Sistem akan menampilkan form edit dengan data produk yang telah ada.
+  * Ubah data yang diinginkan, misalnya:
+      * **Name**: Laptop ASUS ROG Strix
+      * **Price**: 16500000
+      * **Stock**: 8
+  * Klik tombol "**Save Changes**" untuk menyimpan perubahan.
+  * Sistem akan menampilkan halaman daftar produk dengan notifikasi "*Product updated successfully*".
 
----
+### Menghapus Data Produk
 
-## Kesimpulan
+  * Dari halaman daftar produk, klik tombol "**Delete**" pada produk yang ingin dihapus.
+  * Sistem akan menampilkan konfirmasi "*Apakah Anda Yakin?*".
+  * Klik "**OK**" untuk mengkonfirmasi penghapusan.
+  * Sistem akan menampilkan halaman daftar produk dengan notifikasi "*Product deleted successfully*".
 
-Tutorial ini telah membahas secara lengkap cara membuat chatbot menggunakan Flask dan Gemini AI, mulai dari setup environment hingga deployment production. 
+### Validasi Input
 
-### Key Points:
-1. **Backend**: Flask dengan endpoint REST API
-2. **AI Integration**: Google Gemini AI untuk generate response
-3. **Frontend**: HTML/CSS/JS dengan Bootstrap
-4. **Security**: Proper API key handling dan input validation
-5. **Deployment**: Multiple deployment options
+Anda juga dapat menguji validasi input dengan mencoba:
 
-### Next Steps:
-1. Experiment dengan prompt engineering
-2. Tambah fitur sesuai kebutuhan
-3. Optimize performance untuk production
-4. Monitor dan maintain aplikasi
+  * Menambahkan produk dengan kode yang sudah ada (untuk menguji validasi `unique` pada code).
+  * Mengirimkan form dengan field kosong (untuk menguji validasi `required`).
 
-Selamat coding! 🚀
+### Pagination
 
----
+Tambahkan lebih dari 10 produk untuk melihat fitur pagination bekerja, karena kita telah mengatur jumlah produk per halaman sebanyak 10 item.
 
-*Tutorial ini dibuat berdasarkan implementasi aktual chatbot Flask-Gemini. Untuk pertanyaan atau issue, silakan buat ticket di repository project.*
+### Memastikan Semua Fitur Berfungsi
+
+Uji semua fitur CRUD untuk memastikan aplikasi berjalan dengan baik:
+
+  * **Create**: Tambahkan beberapa produk baru.
+  * **Read**: Lihat daftar produk dan detail produk.
+  * **Update**: Edit beberapa produk yang sudah ada.
+  * **Delete**: Hapus produk yang tidak diperlukan.
+
+Dengan melakukan uji coba ini, Anda dapat memastikan bahwa aplikasi manajemen produk Laravel 12 yang Anda buat telah berfungsi dengan baik dan siap digunakan.
+
+-----
+
+## Penutup
+
+Selamat\! Anda telah berhasil menyelesaikan tutorial CRUD (Create, Read, Update, Delete) dengan Laravel 12. Mari kita rangkum apa yang telah kita pelajari dan capai melalui tutorial ini:
+
+  * **Persiapan Awal**: Kita memulai dengan membuat project Laravel baru dan mengonfigurasi database untuk aplikasi.
+  * **Pemodelan Data**: Kita membuat model `Product` beserta migrasi database yang diperlukan untuk menyimpan informasi seperti kode, nama, harga, dan stok produk.
+  * **Implementasi Controller**: Kita mengembangkan `ProductController` dengan metode resource untuk menangani seluruh operasi CRUD.
+  * **Pembuatan View**: Kita membuat beberapa halaman view menggunakan Blade template engine dan Tailwind CSS untuk antarmuka yang responsif dan modern.
+  * **Pengembangan Fitur CRUD**:
+      * **Create**: Form untuk menambahkan produk baru dengan validasi input.
+      * **Read**: Tampilan daftar produk dengan pagination dan halaman detail produk.
+      * **Update**: Form untuk mengedit data produk yang sudah ada.
+      * **Delete**: Fungsionalitas untuk menghapus data dengan konfirmasi.
+
+Dengan tutorial ini, Anda tidak hanya mempelajari dasar-dasar CRUD dengan Laravel 12, tetapi juga praktik-praktik terbaik dalam pengembangan aplikasi web modern, termasuk validasi data, pengelolaan route, dan pembuatan antarmuka yang responsif.
+
+### Langkah Selanjutnya
+
+Untuk mengembangkan aplikasi ini lebih lanjut, Anda dapat mencoba:
+
+  * Menambahkan sistem autentikasi pengguna.
+  * Mengimplementasikan fitur pencarian dan filter produk.
+  * Mengelola upload gambar produk.
+  * Membuat REST API untuk aplikasi mobile.
+  * Menambahkan unit testing untuk memastikan kualitas kode.
+
+### Kesimpulan
+
+Laravel 12 menawarkan berbagai peningkatan yang memudahkan pengembangan aplikasi web yang kuat dan skalabel. Dengan memahami konsep dasar CRUD, Anda telah membangun fondasi yang kokoh untuk mengembangkan aplikasi yang lebih kompleks di masa depan.
+
+Semoga tutorial ini bermanfaat bagi Anda dalam memahami dan menerapkan Laravel 12 untuk kebutuhan pengembangan web Anda. Selamat berkarya\!
